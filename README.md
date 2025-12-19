@@ -1,6 +1,6 @@
 # Terraform Proxmox
 
-This project provisions two VMs on Proxmox using the bpg/proxmox Terraform provider, following production-ready best practices.
+This project provisions two VMs on Proxmox using the bpg/proxmox Terraform provider.
 
 ## Structure
 - **main.tf**: Root configuration, provider, and module usage
