@@ -26,3 +26,44 @@ This project provisions two VMs on Proxmox using the bpg/proxmox Terraform provi
    ```
 3. Review outputs for VM IDs
 
+## Multi-VM Usage (new)
+
+This configuration now supports creating multiple VMs by providing a `vms` list in `variables.tfvars`.
+
+Example `variables.tfvars` snippet:
+
+```hcl
+vms = [
+   {
+      name = "master1"
+      node_name = "ryzen5"
+      ciuser = "beabys"
+      cipassword = "5283151014"
+      ssh_keys = ["ssh-rsa AAAA..."]
+      ipconfig_ipv4 = "10.27.10.51/24"
+      ipconfig_gateway = "10.27.10.1"
+      vm = {
+         id = 100
+         cores = 2
+         memory = 2048
+         disk = {
+            datastore_id = "local-lvm"
+            file_id = "Backup:iso/noble-server-cloudimg-amd64.img"
+            size = 20
+            interface = "scsi0"
+            iothread = true
+            discard = "on"
+         }
+         network_device = { bridge = "vmbr0" }
+      }
+   }
+]
+```
+
+Apply the configuration:
+
+```bash
+terraform init
+terraform plan -var-file="variables.tfvars" -out=plan.out
+terraform apply plan.out
+```
