@@ -18,10 +18,10 @@ variable "proxmox" {
   }
 }
 
-# Proxmox VM1 cloud-init variables
-variable "master" {
-  description = "VM1 configuration object"
-  type = object({
+
+variable "vms" {
+  description = "List of VM objects to create"
+  type = list(object({
     name            = string
     node_name       = string
     ciuser          = string
@@ -29,44 +29,26 @@ variable "master" {
     ssh_keys        = list(string)
     ipconfig_ipv4   = string
     ipconfig_gateway= string
-    id              = number
-    cores           = number
-    memory          = number
-    disk = object({
-      datastore_id = string
-      file_id      = string
-      size         = number
-      interface    = string
-      iothread     = bool
-      discard      = string
+    vm = object({
+      id        = number
+      cores     = number
+      cpu_type  = string
+      memory    = number
+      disk      = object({
+        datastore_id = string
+        file_id      = string
+        size         = number
+        interface    = string
+        iothread     = bool
+        discard      = string
+        replicate    = bool
+        ssd          = bool
+        backup       = bool
+      })
+      network_device = object({
+        bridge = string
+      })
     })
-    network_device = object({
-      bridge = string
-    })
-  })
-  default = {
-    name            = ""
-    node_name       = ""
-    ciuser          = "ubuntu"
-    cipassword      = ""
-    ssh_keys        = []
-    ipconfig_ipv4   = "dhcp"
-    ipconfig_gateway= ""
-    file_id         = ""
-    id              = 0
-    cores           = 1
-    memory          = 1024
-    disk = {
-      datastore_id = ""
-      file_id      = ""
-      size         = 20
-      interface    = "virtio0"
-      iothread     = true
-      discard      = "on"
-    }
-    network_device = {
-      bridge = "vmbr0"
-    }
-  }
+  }))
+  default = []
 }
-

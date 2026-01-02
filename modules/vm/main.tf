@@ -31,6 +31,7 @@ resource "proxmox_virtual_environment_vm" "this" {
   vm_id     = var.vm.id
   cpu {
     cores = var.vm.cores
+    type  = var.vm.cpu_type
   }
   memory {
     dedicated = var.vm.memory
@@ -43,6 +44,9 @@ resource "proxmox_virtual_environment_vm" "this" {
     iothread     = var.vm.disk.iothread
     discard      = var.vm.disk.discard
     size         = var.vm.disk.size
+    replicate    = var.vm.disk.replicate
+    ssd          = var.vm.disk.ssd
+    backup       = var.vm.disk.backup
   }
 
   network_device {

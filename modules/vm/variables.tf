@@ -11,6 +11,7 @@ variable "node_name" {
 variable "ciuser" {
   description = "Default user for cloud-init login"
   type        = string
+  sensitive   = true
   default     = "ubuntu"
 }
 
@@ -24,6 +25,7 @@ variable "cipassword" {
 variable "ssh_keys" {
   description = "List of SSH public keys for cloud-init user"
   type        = list(string)
+  sensitive   = true
   default     = []
 }
 
@@ -45,6 +47,7 @@ variable "vm" {
   type = object({
     id     = number
     cores  = number
+    cpu_type = string
     memory = number
     disk = object({
       datastore_id = string
@@ -53,6 +56,9 @@ variable "vm" {
       interface    = string
       iothread     = bool
       discard      = string
+      replicate    = bool
+      ssd          = bool
+      backup       = bool
     })
     network_device = object({
       bridge = string
@@ -61,6 +67,7 @@ variable "vm" {
   default = {
     id     = 0
     cores  = 1
+    cpu_type = "qemu64"
     memory = 1024
     disk = {
       datastore_id = ""
@@ -69,6 +76,9 @@ variable "vm" {
       interface    = "virtio0"
       iothread     = true
       discard      = "on"
+      replicate    = false
+      ssd          = false
+      backup       = true
     }
     network_device = {
       bridge = "vmbr0"
