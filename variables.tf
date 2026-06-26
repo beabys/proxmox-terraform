@@ -33,6 +33,7 @@ variable "vms" {
       id        = number
       cores     = number
       cpu_type  = string
+      cpu_limit = number
       memory    = number
       disk      = object({
         datastore_id = string

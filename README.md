@@ -1,6 +1,6 @@
 # Terraform Proxmox
 
-This project provisions two VMs on Proxmox using the bpg/proxmox Terraform provider.
+This project provisions multiple VMs on Proxmox using the bpg/proxmox Terraform provider.
 
 ## Structure
 - **main.tf**: Root configuration, provider, and module usage
@@ -18,6 +18,15 @@ This configuration supports creating multiple VMs by providing a `vms` list in `
 Example `variables.tfvars` snippet:
 
 ```hcl
+# Proxmox provider variables
+proxmox = {
+  endpoint      = "https://<node ip>:8006/"
+  api_token     = "api token generated in proxmox"
+  insecure      = true
+  ssh_private_key_path = "pat of your ssh key used to connect to your node"
+  ssh_user = "user of your node"
+}
+
 vms = [
    {
       name = "vm1"
@@ -30,6 +39,7 @@ vms = [
       vm = {
          id = 10
          cores = 2
+         cpu_limit = 2.0 # default is 0
          memory = 2048
          disk = {
             datastore_id = "local-lvm"

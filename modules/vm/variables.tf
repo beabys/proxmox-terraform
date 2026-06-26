@@ -48,6 +48,7 @@ variable "vm" {
     id     = number
     cores  = number
     cpu_type = string
+    cpu_limit = number
     memory = number
     disk = object({
       datastore_id = string
@@ -68,6 +69,7 @@ variable "vm" {
     id     = 0
     cores  = 1
     cpu_type = "qemu64"
+    cpu_limit = 0
     memory = 1024
     disk = {
       datastore_id = ""
