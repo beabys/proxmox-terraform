@@ -38,3 +38,7 @@ terraform.rc
 .terragrunt-cache/
 # Ignore .vscode directory
 .vscode/
+
+AGENTS.md
+.ilnamiqui/
+.opencode/

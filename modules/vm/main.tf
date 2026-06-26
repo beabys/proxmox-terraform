@@ -1,4 +1,3 @@
-
 terraform {
   required_providers {
     proxmox = {
@@ -32,6 +31,7 @@ resource "proxmox_virtual_environment_vm" "this" {
   cpu {
     cores = var.vm.cores
     type  = var.vm.cpu_type
+    limit = var.vm.cpu_limit
   }
   memory {
     dedicated = var.vm.memory
