@@ -3,11 +3,11 @@
 variable "proxmox" {
   description = "Proxmox API connection settings (endpoint, token, TLS and SSH helper settings)"
   type = object({
-    endpoint              = string
-    api_token             = string
-    insecure              = bool
-    ssh_user              = string
-    ssh_private_key_path  = string
+    endpoint             = string
+    api_token            = string
+    insecure             = bool
+    ssh_user             = string
+    ssh_private_key_path = string
   })
   default = {
     endpoint             = ""
@@ -22,20 +22,20 @@ variable "proxmox" {
 variable "vms" {
   description = "List of VM objects to create"
   type = list(object({
-    name            = string
-    node_name       = string
-    ciuser          = string
-    cipassword      = string
-    ssh_keys        = list(string)
-    ipconfig_ipv4   = string
-    ipconfig_gateway= string
+    name             = string
+    node_name        = string
+    ciuser           = string
+    cipassword       = string
+    ssh_keys         = list(string)
+    ipconfig_ipv4    = string
+    ipconfig_gateway = string
     vm = object({
       id        = number
       cores     = number
       cpu_type  = string
-      cpu_limit = number
+      cpu_limit = optional(number, 0)
       memory    = number
-      disk      = object({
+      disk = object({
         datastore_id = string
         file_id      = string
         size         = number
@@ -49,6 +49,39 @@ variable "vms" {
       network_device = object({
         bridge = string
       })
+    })
+  }))
+  default = []
+}
+
+
+variable "containers" {
+  description = "List of LXC container objects to create"
+  type = list(object({
+    hostname         = string
+    node_name        = string
+    cipassword       = string
+    ssh_keys         = list(string)
+    ipconfig_ipv4    = string
+    ipconfig_gateway = string
+    container = object({
+      id     = number
+      cores  = number
+      memory = number
+      disk = object({
+        datastore_id = string
+        size         = number
+      })
+      template = object({
+        file_id = string
+        type    = string
+      })
+      network_interface = object({
+        name   = string
+        bridge = string
+      })
+      unprivileged = optional(bool, false)
+      nesting      = optional(bool, false)
     })
   }))
   default = []
