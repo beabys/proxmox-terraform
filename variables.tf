@@ -80,7 +80,7 @@ variable "containers" {
         name   = string
         bridge = string
       })
-      unprivileged = optional(bool, false)
+      unprivileged = optional(bool, true)
       nesting      = optional(bool, false)
     })
   }))
